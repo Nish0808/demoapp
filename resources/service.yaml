@@ -1,0 +1,36 @@
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: demoapp-service
+  namespace: sample-ns
+  labels:
+    intent: service-for-demoapp
+spec:
+  type: NodePort
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+    #nodePort: 8083
+  selector:
+    app: demoapp 
+    
+    
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: demoapp-headless-service
+  namespace: sample-ns
+  labels:
+    intent: headless-service-for-demoapp
+spec:
+  clusterIP: None
+  ports:
+  - name: http
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: demoapp 

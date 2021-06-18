@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: demoapp-statefulset
+  namespace: sample-ns
+  labels:
+    app: demoapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: demoapp
+  serviceName: "demoapp-headless-service"
+  template:
+    metadata:
+      labels:
+        app: demoapp
+    spec:
+     volumes:
+       - name: tomcatlogs
+         persistentVolumeClaim:
+            claimName: "demoapp-pv-claim"
+       - name: configmap-volume
+         configMap:
+           name: "demoapp-cmap"  
+     containers:
+        - name: demoapp
+          image: sampleapp:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+           - name: http 
+             containerPort: 8080 
+             protocol: TCP
+          envFrom:
+          - secretRef:
+                name: "demoapp-secret"
+          volumeMounts:
+            - name: tomcatlogs
+              mountPath: /usr/local/tomcat/logs
+            - name: configmap-volume
+              mountPath: /opt/cmap

@@ -1,0 +1,15 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: demoapp-logs
+  namespace: sample-ns
+  labels:
+    intent: logs
+spec:
+  storageClassName: "standard"
+  capacity:
+    storage: 500Mi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/opt/demo/logs"

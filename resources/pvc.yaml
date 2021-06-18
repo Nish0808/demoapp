@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: demoapp-pv-claim
+  namespace: sample-ns
+spec:
+  storageClassName: "standard"
+  selector:
+    matchExpressions:
+      - {key: intent, operator: In, values: [logs]}
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 500Mi 
